@@ -1,9 +1,14 @@
 import kotlin.io.path.Path
 import kotlin.io.path.readLines
+import kotlin.io.path.readText
 import kotlin.math.abs
 
 fun readInput(name: String) =
     Path("/Users/qwwdfsad/workspace/aoc25/inputs/$name.txt").readLines().filter { it.isNotBlank() }
+
+fun readInputText(name: String) =
+    Path("/Users/qwwdfsad/workspace/aoc25/inputs/$name.txt").readText()
+
 
 fun main() {
     val input = readInput("day01")
