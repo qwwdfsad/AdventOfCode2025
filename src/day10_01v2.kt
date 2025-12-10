@@ -12,9 +12,10 @@ fun main() {
     var answer = 0L
     var totalTime = Duration.ZERO
     for (line in input) {
-        val conf = line.substringAfter("[").substringBefore("]").map {
-            if (it == '.') false else true
-        }.toBooleanArray()
+        var target = 0
+        line.substringAfter("[").substringBefore("]").withIndex().forEach { (i, bit) ->
+            if (bit == '#') target += 1 shl i
+        }
 
         val buttons = line.substringAfter("]")
             .substringBefore("{").trim()
@@ -23,13 +24,15 @@ fun main() {
             .map { it.split(",").map { it.toInt() } }
 
         // Solve
-        fun solve(idx: Int, state: BooleanArray, presses: Int): Int {
-            if (state.contentEquals(conf)) return presses
+        fun solve(idx: Int, state: Int, presses: Int): Int {
+            if (target == state) return presses
             if (idx == buttons.size) return Int.MAX_VALUE
             val b1 = run {
-                val st = state.copyOf()
                 // Apply
-                buttons[idx].forEach { st[it] = !st[it] }
+                var st = state
+                buttons[idx].forEach {
+                    st = st xor (1 shl it)
+                }
                 solve(idx + 1, st, presses + 1)
             }
             val b2 = run {
@@ -38,7 +41,7 @@ fun main() {
             return min(b1, b2)
         }
         totalTime += measureTime {
-            val min = solve(0, BooleanArray(conf.size) { false }, 0)
+            val min = solve(0, 0, 0)
             answer += min
         }
     }
