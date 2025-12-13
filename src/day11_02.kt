@@ -62,7 +62,6 @@ fun main() {
 
     for (v in sorted) {
          if (v in needles) {
-            needles.remove(v)
             val cnt = dp.getValue(v)
             val slot = cnt.indexOfFirst { it == 0L }
             if (slot == -1) error("?")
